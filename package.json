@@ -1,0 +1,29 @@
+{
+  "name": "randomwinner",
+  "version": "1.0.0",
+  "main": "js/app.js",
+  "scripts": {},
+  "keywords": [
+    "steem",
+    "random",
+    "winner",
+    "picker"
+  ],
+  "author": "Reazul Iqbal",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeBull/SteemRandomPicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CodeBull/SteemRandomPicker/issues"
+  },
+  "homepage": "https://github.com/CodeBull/SteemRandomPicker#readme",
+  "description": ""
+}

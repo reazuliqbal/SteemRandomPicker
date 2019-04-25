@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Steem Random Winner Picker</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a href="./" class="navbar-brand">Steem Random Winner Picker</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsed"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="collapsed">
+          <div class="ml-auto">
+            <a href="#" data-toggle="modal" data-target="#settingsModal">Settings</a>
+          </div>
+        </div>
+      </div>
+      </div>
+    </nav>
+  </header>
+  <div class="container">
+
+    <form id="select-winner" class="mt-5 mb-3" method="post">
+      <div class="form-group">
+        <input type="text" name="url" id="url" class="form-control form-control-lg text-center" autocomplete="off"
+          placeholder="Enter your Steem post URL">
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-header">Filters</div>
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <div class="card-title font-weight-bold">Follow</div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="follow" id="ignore_follow" value="ignore" checked>
+                <label class="form-check-label" for="ignore_follow">Not required to participate</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="follow" id="required_follow" value="required">
+                <label class="form-check-label" for="required_follow">Required to participate</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="follow" id="count_follow" value="count">
+                <label class="form-check-label" for="count_follow">Count as +1 entry</label>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card-title font-weight-bold">Resteem</div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="resteem" id="ignore_resteem" value="ignore" checked>
+                <label class="form-check-label" for="ignore_resteem">Not required to participate</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="resteem" id="required_follow" value="required">
+                <label class="form-check-label" for="required_resteem">Required to participate</label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="resteem" id="count_follow" value="count">
+                <label class="form-check-label" for="count_resteem">Count as +1 entry</label>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card-title font-weight-bold">Reputation</div>
+              <div class="form-group">
+                <label for="min_rep">Minimum Reputation</label>
+                <input type="number" name="min_rep" id="min_rep" class="form-control" step="1" value="25">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <button class="btn btn-lg btn-success text-uppercase" type="submit">Get A Random Winner</button>
+      </div>
+    </form>
+
+    <div class="loading" id="loading">
+      <div class="cssload-dots">
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+      </div>
+
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="12"></feGaussianBlur>
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0	0 1 0 0 0	0 0 1 0 0	0 0 0 18 -7" result="goo">
+            </feColorMatrix>
+            <!--<feBlend in2="goo" in="SourceGraphic" result="mix" ></feBlend>-->
+          </filter>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="winner shadow-sm border border-light text-center" id="winner"></div>
+  </div>
+
+  <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="settingsLabel">Settings</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="steemd_node">Steemd Node</label>
+            <select name="steemd_node" id="steemd_node" class="form-control">
+              <option value="https://anyx.io">anyx.io</option>
+              <option value="https://rpc.usesteem.com">rpc.usesteem.com</option>
+              <option value="https://api.steemit.com">api.steemit.com</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="hive_node">Hivemind Node</label>
+            <select name="hive_node" id="hive_node" class="form-control">
+              <option value="https://tower.hive.oracle-d.com/api/v1">tower.hive.oracle-d.com</option>
+              <option value="https://hivemind.steemviz.com/api/v1">hivemind.steemviz.com</option>
+              <option value="https://tower.emrebeyler.me/api/v1">tower.emrebeyler.me</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="saveSettings">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/dsteem@^0.10.1/dist/dsteem.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
