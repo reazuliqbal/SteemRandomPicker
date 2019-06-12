@@ -1,6 +1,6 @@
 // Setting up default nodes
 let steemdNode = 'https://anyx.io';
-let hiveNode = 'https://tower.hive.oracle-d.com/api/v1';
+let hiveNode = 'https://tower.emrebeyler.me/api/v1/';
 
 if (localStorage.getItem('steemd')) steemdNode = localStorage.getItem('steemd');
 if (localStorage.getItem('hive')) hiveNode = localStorage.getItem('hive');
@@ -80,8 +80,8 @@ $('#select-winner').submit(async (e) => {
   $('#loading').show();
 
   const url = $('#url').val();
-  const follow = $('input[name="follow"]').val();
-  const resteem = $('input[name="resteem"]').val();
+  const follow = $('input[name="follow"]:checked').val();
+  const resteem = $('input[name="resteem"]:checked').val();
   const rep = $('input[name="min_rep"]').val();
 
   $('.winner').hide().empty();
@@ -103,7 +103,7 @@ $('#select-winner').submit(async (e) => {
   if (resteem !== 'ignore') {
     const resteemQuery = await window.axios.get(`${hiveNode}/post_cache/${author}/${permlink}/reblogs/`);
 
-    const resteems = resteemQuery.body.map(r => r.author);
+    const resteems = resteemQuery.data.map(r => r.author);
 
     const resteemers = users.filter(u => resteems.includes(u.author));
 
@@ -115,7 +115,7 @@ $('#select-winner').submit(async (e) => {
   if (follow !== 'ignore') {
     const followersQuery = await window.axios.get(`${hiveNode}/accounts/${author}/followers/`);
 
-    const followers = users.filter(u => followersQuery.body.followers.includes(u.author));
+    const followers = users.filter(u => followersQuery.data.followers.includes(u.author));
 
     if (follow === 'count') users.push(...followers);
     if (follow === 'required') users = followers;
